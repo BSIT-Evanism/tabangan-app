@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Suspense } from 'react'
+import Image from 'next/image'
 
 async function getProductsDetails(id) {
     const response = await fetch('https://fakestoreapi.com/products/' + id, {
@@ -15,10 +16,13 @@ async function page({ params }) {
     const product = await getProductsDetails(params.id)
     return (
         <>
-            <h1>Product {id}</h1>
-            <h2>{product.title}</h2>
-            <h3>{product.price}</h3>
-            <p>{product.description}</p>
+            <Suspense fallback={<div>Loading...</div>}>
+                <h1>Product {id}</h1>
+                <h2>{product.title}</h2>
+                <h3>{product.price}</h3>
+                <p>{product.description}</p>
+                <Image src={product.image} alt={product.title} width={200} height={200} />
+            </Suspense>
 
         </>
     )
